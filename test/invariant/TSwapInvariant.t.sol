@@ -35,9 +35,10 @@ contract TSwapInvariant is Test {
         //---> addressing the handler in the invariant tests
         tSwapHandler = new TSwapHandler(pool, poolToken, weth);
 
-        bytes4[] memory selectors = new bytes4[](1); //change when you do the other functions
+        bytes4[] memory selectors = new bytes4[](2); //change when you do the other functions
 
         selectors[0] = TSwapHandler.deposit.selector;
+        selectors[1] = TSwapHandler.swapExactOutput.selector;
 
         targetSelector(FuzzSelector({ addr: address(tSwapHandler), selectors: selectors }));
         targetContract(address(tSwapHandler));

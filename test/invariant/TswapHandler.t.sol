@@ -16,6 +16,7 @@ contract TSwapHandler is Test {
     TSwapPool tSwapPool;
     ERC20Mock poolToken;
     ERC20Mock weth;
+    uint256 public immutable MIN_WETH_TO_DEPOSIT;
 
     // our ghost variables
     // starting amounts
@@ -34,17 +35,75 @@ contract TSwapHandler is Test {
     int256 public poolTokenActualDelta;
 
     address lp = makeAddr("lp");
+    address user = makeAddr("user");
 
     constructor(TSwapPool _tSwapPool, ERC20Mock _poolToken, ERC20Mock _weth) {
         tSwapPool = _tSwapPool;
         poolToken = _poolToken;
         weth = _weth;
+        MIN_WETH_TO_DEPOSIT = tSwapPool.getMinimumWethDepositAmount();
+    }
+
+    function swapExactOutput(uint256 outputAmount) public {
+        // swap output
+        //    function swapExactOutput(
+        //     IERC20 inputToken,
+        //     IERC20 outputToken,
+        //     uint256 outputAmount,
+        //     uint64 deadline
+        // )
+        // bounds:
+        // inputToken need to be weth or the other
+        // outputToken need to be weth or the other
+        // outputToken and inputToken need to always be different
+        // outputAmount need to be reasonable
+        // need to  update the balances and deltas before and after
+
+        outputAmount = bound(outputAmount, 1, type(uint64).max);
+        ERC20Mock inputToken;
+        ERC20Mock outputToken;
+        if (outputAmount % 2 == 0) {
+            inputToken = weth;
+            outputToken = poolToken;
+        } else {
+            inputToken = poolToken;
+            outputToken = weth;
+        }
+        uint256 inputAmount = tSwapPool.getInputAmountBasedOnOutput(
+            outputAmount, inputToken.balanceOf(address(tSwapPool)), outputToken.balanceOf(address(tSwapPool))
+        );
+
+        vm.assume(outputToken.balanceOf(address(tSwapPool)) > MIN_WETH_TO_DEPOSIT);
+
+        // get starting balances and deltas
+        // outputToken is the one that goes out from pool
+        if (outputToken == weth) {
+            _updateStartingBalanceAndDeltas(int256(outputAmount) * -1, int256(inputAmount));
+        } else {
+            _updateStartingBalanceAndDeltas(int256(inputAmount), int256(outputAmount) * -1);
+        }
+
+        //////////// swap!! ////////////
+
+        // mint necessary tokens to user
+        inputToken.mint(user, inputAmount);
+
+        vm.startPrank(user);
+        // approve pool to spend those tokens
+        inputToken.approve(address(tSwapPool), inputAmount);
+
+        // swap
+        tSwapPool.swapExactOutput(inputToken, outputToken, outputAmount, uint64(block.timestamp));
+        vm.stopPrank();
+
+        // update ending balances and deltas
+        _updateEndingBalanceAndDeltas();
     }
 
     function deposit(uint256 wethAmount) public {
         // make a reasonable amount with bound
-        uint256 minWethTODeposit = tSwapPool.getMinimumWethDepositAmount();
-        wethAmount = bound(wethAmount, minWethTODeposit, type(uint64).max);
+
+        wethAmount = bound(wethAmount, MIN_WETH_TO_DEPOSIT, type(uint64).max);
 
         uint256 minimumLiquidityTokensToMint = wethAmount;
         uint256 maximumPoolTokensToDeposit =
@@ -54,24 +113,25 @@ contract TSwapHandler is Test {
         poolToken.mint(lp, maximumPoolTokensToDeposit);
 
         // before depositing, check the balance of the pool
-        _updateStartingBalanceAndDeltas(wethAmount, maximumPoolTokensToDeposit);
+        _updateStartingBalanceAndDeltas(int256(wethAmount), int256(maximumPoolTokensToDeposit));
 
         vm.startPrank(lp);
         weth.approve(address(tSwapPool), type(uint256).max);
         poolToken.approve(address(tSwapPool), type(uint256).max);
 
-        tSwapPool.deposit(wethAmount, minimumLiquidityTokensToMint, maximumPoolTokensToDeposit, uint64(block.timestamp));
+        tSwapPool.deposit(wethAmount, 0, maximumPoolTokensToDeposit, uint64(block.timestamp));
 
         vm.stopPrank();
+
         _updateEndingBalanceAndDeltas();
     }
 
     ////////// helpers //////////
-    function _updateStartingBalanceAndDeltas(uint256 _wethAmount, uint256 _poolTokenAmount) private {
+    function _updateStartingBalanceAndDeltas(int256 _wethAmount, int256 _poolTokenAmount) private {
         poolWethStartingBalance = int256(weth.balanceOf(address(tSwapPool)));
         poolTokenStartingBalance = int256(poolToken.balanceOf(address(tSwapPool)));
-        poolWethExpectedDelta = int256(_wethAmount);
-        poolTokenExpectedDelta = int256(_poolTokenAmount);
+        poolWethExpectedDelta = _wethAmount;
+        poolTokenExpectedDelta = _poolTokenAmount;
     }
 
     function _updateEndingBalanceAndDeltas() private {

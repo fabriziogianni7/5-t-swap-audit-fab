@@ -1,0 +1,1 @@
+`forge inspect TSwapPool methods` to list all methods of a contract

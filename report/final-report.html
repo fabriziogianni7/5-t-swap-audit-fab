@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>final-report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<!-- Your report starts here! -->
+<h1 id="tswap-security-review">TSwap Security Review</h1>
+<p><img src="logo.JPG" alt="fabriziogianni7's logo"></p>
+<p>Prepared by: <a href="https://github.com/fabriziogianni7">Fabriziogianni7</a><br>
+Lead Auditors:</p>
+<ul>
+<li><a href="https://github.com/fabriziogianni7">Fabriziogianni7</a></li>
+</ul>
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#protocol-summary">Protocol Summary</a></li>
+<li><a href="#disclaimer">Disclaimer</a></li>
+<li><a href="#risk-classification">Risk Classification</a></li>
+<li><a href="#audit-details">Audit Details</a>
+<ul>
+<li><a href="#files-summary">Files Summary</a></li>
+<li><a href="#files-details">Files Details</a></li>
+<li><a href="#issue-summary">Issue Summary</a></li>
+</ul>
+</li>
+<li><a href="#findings">Findings</a></li>
+<li><a href="#high">High</a></li>
+<li><a href="#medium">Medium</a></li>
+<li><a href="#low">Low</a></li>
+<li><a href="#informational">Informational</a></li>
+</ul>
+<h1 id="protocol-summary">Protocol Summary</h1>
+<p>This project is meant to be a permissionless way for users to swap assets between each other at a fair price. You can think of T-Swap as a decentralized asset/token exchange (DEX).<br>
+T-Swap is known as an <a href="https://chain.link/education-hub/what-is-an-automated-market-maker-amm">Automated Market Maker (AMM)</a> because it doesn't use a normal &quot;order book&quot; style exchange, instead it uses &quot;Pools&quot; of an asset.<br>
+It is similar to Uniswap. To understand Uniswap, please watch this video: <a href="https://www.youtube.com/watch?v=DLu35sIqVTM">Uniswap Explained</a></p>
+<h1 id="disclaimer">Disclaimer</h1>
+<p><a href="https://github.com/fabriziogianni7">Fabriziogianni7</a> makes all effort to find as many vulnerabilities in the code in the given time period, but holds no responsibilities for the findings provided in this document. A security audit by the team is not an endorsement of the underlying business or product. The audit was time-boxed and the review of the code was solely on the security aspects of the Solidity implementation of the contracts.</p>
+<h1 id="risk-classification">Risk Classification</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>Impact</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>High</td>
+<td>Medium</td>
+<td>Low</td>
+</tr>
+<tr>
+<td></td>
+<td>High</td>
+<td>H</td>
+<td>H/M</td>
+<td>M</td>
+</tr>
+<tr>
+<td>Likelihood</td>
+<td>Medium</td>
+<td>H/M</td>
+<td>M</td>
+<td>M/L</td>
+</tr>
+<tr>
+<td></td>
+<td>Low</td>
+<td>M</td>
+<td>M/L</td>
+<td>L</td>
+</tr>
+</tbody>
+</table>
+<p>We use the <a href="https://docs.codehawks.com/hawks-auditors/how-to-evaluate-a-finding-severity">CodeHawks</a> severity matrix to determine severity. See the documentation for more details.</p>
+<h1 id="audit-details">Audit Details</h1>
+<h2 id="files-summary">Files Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.sol Files</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Total nSLOC</td>
+<td>262</td>
+</tr>
+</tbody>
+</table>
+<h2 id="files-details">Files Details</h2>
+<table>
+<thead>
+<tr>
+<th>Filepath</th>
+<th>nSLOC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src/PoolFactory.sol</td>
+<td>35</td>
+</tr>
+<tr>
+<td>src/TSwapPool.sol</td>
+<td>227</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>262</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="issue-summary">Issue Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>No. of Issues</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical</td>
+<td>0</td>
+</tr>
+<tr>
+<td>High</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Low</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<h1 id="findings">Findings</h1>
+<h2 id="high">High</h2>
+<h3 id="h-1-sending-a-%22bonus-fee%22-after-tswappoolswapcountmax-is-reached-is-breaking-x--y--k-invariant">[H-1] Sending a &quot;bonus fee&quot; after <code>TSwapPool::SWAP_COUNT_MAX</code> is reached is breaking x * y = k invariant</h3>
+<p><strong>Description:</strong><br>
+<code>TSwapPool::_swap</code> function is sending an arbitrary amount of Tokens to whom is swapping the the count of swap reaches<br>
+<code>TSwapPool::SWAP_COUNT_MAX</code>. This causes the protocol to lose liquidity</p>
+<p><strong>Impact:</strong><br>
+Critical: since <code>TSwapPool::_swap</code> function is the core of the protocol, the likelihood of this bug happening is very high as well as the damage that can cause<br>
+<strong>Proof Of Concept:</strong><br>
+<strong>Recommended Mitigation:</strong><br>
+remove this dynamic or use an approach more similar on how the fees are accrued</p>
+<h3 id="h-2-tswappooldeposit-function-does-not-check-the-deadline-and-makes-the-transaction-subject-to-long-pending-transactions-and-wild-swings-in-price-making-deposit-conditions-unfavorable-for-the-lp">[H-2] <code>TSwapPool::deposit</code> function does not check the deadline and makes the transaction subject to long-pending transactions and wild swings in price, making deposit conditions unfavorable for the lp.</h3>
+<p><strong>Description:</strong><br>
+<code>TSwapPool::deposit</code> has a parameter <code>deadline</code> but is not using it.</p>
+<p><strong>Impact:</strong><br>
+High: <code>TSwapPool::deposit</code> function the entrypoint to liquidity providers, they can deposit large amount of tokens and be subject to change of prices and MEV. Likelyhood is also high since this always happen every time users call this method.</p>
+<p><strong>Proof Of Concept:</strong><br>
+<code>deadline</code> parameter is never used:</p>
+<pre class="hljs"><code><div>function deposit(
+        uint256 wethToDeposit,
+        uint256 minimumLiquidityTokensToMint,
+        uint256 maximumPoolTokensToDeposit,
+        uint64 deadline // @audit-info unused parameters
+    )
+        external
+        revertIfZero(wethToDeposit)
+        returns (uint256 liquidityTokensToMint)
+    {...}
+</div></code></pre>
+<p><strong>Recommended Mitigation:</strong><br>
+change the function adding the correct modifier</p>
+<pre class="hljs"><code><div>function deposit(
+        uint256 wethToDeposit,
+        uint256 minimumLiquidityTokensToMint,
+        uint256 maximumPoolTokensToDeposit,
+        uint64 deadline // @audit-info unused parameters
+    )
+        external
+<span class="hljs-addition">+       revertIfDeadlinePassed(deadline)</span>
+        revertIfZero(wethToDeposit)
+        returns (uint256 liquidityTokensToMint)
+    {...}
+</div></code></pre>
+<h3 id="h-4-tswappoolgetinputamountbasedonoutput-calculate-fees-wrongly-uses-10k997-instead-of-1k997">[H-4] <code>TSwapPool::getInputAmountBasedOnOutput</code> calculate fees wrongly, uses 10k/997 instead of 1k/997</h3>
+<p><strong>Description:</strong><br>
+<code>TSwapPool::getInputAmountBasedOnOutput</code> uses a magic number to calculate the fee. it scales the amount of fee to 10_000 instead of 1_000.</p>
+<p><strong>Impact:</strong><br>
+Likelyhood: High. It happens every time this method is invoked<br>
+Impact: High. the fees for the inputAmount are going to be very high.</p>
+<p><strong>Proof Of Concept:</strong><br>
+here the test:</p>
+<pre class="hljs"><code><div>function testFeesMiscalculation() public {
+        //deposit in pool
+
+        vm.startPrank(liquidityProvider);
+        weth.approve(address(pool), 100e18);
+        poolToken.approve(address(pool), 100e18);
+        pool.deposit(100e18, 100e18, 100e18, uint64(block.timestamp));
+        vm.stopPrank();
+
+        uint256 outputAmount = 2e18;
+        uint256 inputReserves = poolToken.balanceOf(address(pool));
+        uint256 outputReserves = weth.balanceOf(address(pool));
+        uint256 inputAmountFor2Weth = pool.getInputAmountBasedOnOutput(outputAmount, inputReserves, outputReserves);
+
+        uint256 shouldBe = ((inputReserves * outputAmount) * 1_000) / ((outputReserves - outputAmount) * 997);
+
+        console.log(&quot;shouldBe %&quot;, shouldBe);
+        console.log(&quot;inputAmountFor2Weth %&quot;, inputAmountFor2Weth);
+        assertGt(inputAmountFor2Weth, shouldBe);
+    }
+</div></code></pre>
+<p>the test above logs</p>
+<pre class="hljs"><code><div>shouldBe % 2046957198124987206
+inputAmountFor2Weth % 20469571981249872065
+</div></code></pre>
+<p><strong>Recommended Mitigation:</strong></p>
+<ul>
+<li>use magic numbers</li>
+<li>change</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-addition">+ return ((inputReserves * outputAmount) * 1_000) / ((outputReserves - outputAmount) * 997);</span>
+<span class="hljs-deletion">- return ((inputReserves * outputAmount) * 10000) / ((outputReserves - outputAmount) * 997);</span>
+</div></code></pre>
+<h3 id="h-5-slippage-vulnerability-in-tswappoolswapexactoutput-due-to-missing-maxinputtokenamount">[H-5] Slippage vulnerability in <code>TSwapPool::swapExactOutput</code> due to missing maxInputTokenAmount</h3>
+<p><strong>Description:</strong><br>
+<code>TSwapPool::swapExactOutput</code> function does not include any anti-slippage measure. the function should specify a maximum amount of token that the user allows to input.</p>
+<p><strong>Impact:</strong><br>
+Likelyhood: Medium-High. It happens every time this method is invoked.<br>
+Impact: High. If market conditions change before the execution of the function is completed, the user can get bad swapping conditions.</p>
+<p><strong>Proof Of Concept:</strong></p>
+<ol>
+<li>The price of 1 WETH before swap is 1,000 USDC</li>
+<li>User inputs a swapExactOutput looking for 1 WETH
+<ul>
+<li>inputToken = USDC</li>
+<li>outputToken = WETH</li>
+<li>outputAmount = 1</li>
+<li>deadline = whatever</li>
+<li>The function does not offer a maxInput amount</li>
+</ul>
+</li>
+<li>As the transaction is pending in the mempool market condition change:
+<ul>
+<li>1 WETH is now 10,000 USDC. 10x more than the user expected</li>
+</ul>
+</li>
+<li>The transaction completes, but the user sent the protocol 10,000 USDC instead of the expected 1,000 USDC</li>
+</ol>
+<p><strong>Recommended Mitigation:</strong><br>
+Include a <code>maxInputTokenAmount</code> parameter in the method</p>
+<pre class="hljs"><code><div>function swapExactOutput(
+        IERC20 inputToken,
+        IERC20 outputToken,
+        uint256 outputAmount,
+        uint64 deadline
+<span class="hljs-addition">+       uint256 maxInputTokenAmount</span>
+    )
+</div></code></pre>
+<h3 id="h-6-tswappoolsellpooltokens-mismatches-input-and-output-tokens-causing-users-to-receive-the-incorrect-amount-of-tokens">[H-6] <code>TSwapPool::sellPoolTokens</code> mismatches input and output tokens causing users to receive the incorrect amount of tokens</h3>
+<p><strong>Description:</strong> In <code>TSwapPool::sellPoolTokens</code> <code>swapExactOutput</code> is used to sell pool tokens in exchange of WETH.<br>
+The argument <code>poolTokenAmount</code> in <code>sellPoolTokens</code> is used as 3rd input in <code>swapExactOutput</code>. <code>swapExactOutput</code> accept <code>outputAmount</code>as a 3rd input. This should be the amount of Weth.</p>
+<p>Using <code>swapExactOutput</code> is non logical, suggesting using <code>swapExactInput</code>.</p>
+<p><strong>Impact:</strong> Likelyhood: High. It happens every time this method is invoked.<br>
+Impact: High. Users will swap the wrong amount of tokens, which is a <code>severe disruption of protcol functionality</code>.</p>
+<p><strong>Recommended Mitigation:</strong></p>
+<ul>
+<li>use <code>swapExactInput</code> instead of <code>swapExactOutput</code>.</li>
+</ul>
+<h2 id="medium">Medium</h2>
+<h3 id="m-1-using-erc721mint-can-be-dangerous">[M-1] Using <code>ERC721::_mint()</code> can be dangerous</h3>
+<p>Using <code>ERC721::_mint()</code> can mint ERC721 tokens to addresses which don't support ERC721 tokens. Use <code>_safeMint()</code> instead of <code>_mint()</code> for ERC721.</p>
+<ul>
+<li>
+<p>Found in src/TSwapPool.sol <a href="src/TSwapPool.sol#L157">Line: 157</a></p>
+<pre class="hljs"><code><div>        _mint(msg.sender, liquidityTokensToMint);
+</div></code></pre>
+</li>
+</ul>
+<h3 id="m-2-tswappooladdliquiditymintandtransfer-emit-tswappoolliquidityadded-event-with-wrong-parameters-returning-bad-informations-to-external-services-listening-to-this-contract">[M-2] <code>TSwapPool::_addLiquidityMintAndTransfer</code> emit <code>TSwapPool::LiquidityAdded</code> event with wrong parameters returning bad informations to external services listening to this contract</h3>
+<h2 id="low">Low</h2>
+<h3 id="l-1-tswappoolswapexactinput-has-an-unused-return-value-causing-the-function-to-always-return-0-wrong-data">[L-1] <code>TSwapPool::swapExactInput</code> has an unused return value, causing the function to always return 0, wrong data.</h3>
+<p><strong>Description:</strong><br>
+This is the function:</p>
+<pre class="hljs"><code><div> function swapExactInput(
+        IERC20 inputToken,
+        uint256 inputAmount,
+        IERC20 outputToken,
+        uint256 minOutputAmount,
+        uint64 deadline
+    )
+        public
+        revertIfZero(inputAmount)
+        revertIfDeadlinePassed(deadline)
+        returns (
+            // unused variable
+            uint256 output
+        )
+</div></code></pre>
+<p><strong>Recommended Mitigation:</strong><br>
+remove the return value</p>
+<pre class="hljs"><code><div> function swapExactInput(
+        IERC20 inputToken,
+        uint256 inputAmount,
+        IERC20 outputToken,
+        uint256 minOutputAmount,
+        uint64 deadline
+    )
+        public
+        revertIfZero(inputAmount)
+        revertIfDeadlinePassed(deadline)
+<span class="hljs-deletion">-        returns (</span>
+<span class="hljs-deletion">-            // unused variable</span>
+<span class="hljs-deletion">-            uint256 output</span>
+<span class="hljs-deletion">-        )</span>
+</div></code></pre>
+<h2 id="informational---gas">Informational - Gas</h2>
+<h3 id="i-1-tswappooldeposit-has-an-unused-variable-tswappoolsellpooltokens-remove">[I-1] <code>TSwapPool::deposit</code> has an unused variable ``TSwapPool::sellPoolTokens` remove</h3>
+<h3 id="i-2-tswappooladdliquiditymintandtransfer-natspec-not-clear-this-is-a-sensitive-function-and-should-only-be-called-by-addliquidity-should-be-this-is-a-sensitive-function-and-should-only-be-called-by-deposit">[I-2] <code>TSwapPool::_addLiquidityMintAndTransfer</code> natspec not clear: <code>This is a sensitive function, and should only be called by addLiquidity</code> should be: <code>This is a sensitive function, and should only be called by deposit</code></h3>
+<h3 id="i-3-tswappoolgetoutputamountbasedoninput-tswappoolgetinputamountbasedonoutput-uses-magic-numbers">[I-3] <code>TSwapPool::getOutputAmountBasedOnInput</code>, <code>TSwapPool::getInputAmountBasedOnOutput</code>, uses magic numbers.</h3>
+<h3 id="i-4-missing-natspec-on-fundamental-methods-getoutputamountbasedoninput-getinputamountbasedonoutput-swapexactinput-getpooltokenstodepositbasedonweth">[I-4] Missing natspec on fundamental methods <code>getOutputAmountBasedOnInput</code>, <code>getInputAmountBasedOnOutput</code>, <code>swapExactInput</code>, <code>getPoolTokensToDepositBasedOnWeth</code></h3>
+<h3 id="i-5-poolfactory-has-an-unused-error-poolfactorypooldoesnotexist-remove">[I-5] <code>PoolFactory</code> has an unused error <code>PoolFactory__PoolDoesNotExist</code> remove</h3>
+
+</body>
+</html>
